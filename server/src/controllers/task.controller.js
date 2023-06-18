@@ -1,25 +1,25 @@
 const Task = require("../models/task.model");
 
-//Get all tasks
+//Get all Task
 const getAllTask = async (req, res) => {
     try {
-        const tasks = await Task.find();
-        res.json(tasks);
+        const Tasks = await Task.find();
+        res.json(Tasks);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 }
 
-//Create a new task
+//Create a new Task
 const createTask = async (req, res) => {
-    const { title, description, contact, Status } = req.body;
+    const { title, description, contact, status } = req.body;
 
     try {
         const newTask = new Task({
             title,
             description,
             contact,
-            Status,
+            status,
         })
 
         await newTask.save();
@@ -32,7 +32,7 @@ const createTask = async (req, res) => {
 //Update a task
 const updateTask = async (req, res) => {
     const { id } = req.params;
-    const { title, description, contact, Status } = req.body;
+    const { status } = req.body;
 
     try {
         const task = await Task.findById(id);
@@ -41,10 +41,7 @@ const updateTask = async (req, res) => {
             return res.status(404).json({ message: 'Task not found' });
         }
 
-        task.title = title;
-        task.description = description;
-        task.contact = contact;
-        task.Status = Status;
+        task.status = status;
         task.updatedAt = Date.now();
 
         await task.save();

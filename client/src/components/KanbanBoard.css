@@ -1,0 +1,29 @@
+.kanban-board {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column {
+  flex: 1;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}
+
+.task {
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: move;
+}
+
+.filter-buttons {
+  margin-top: 20px;
+}
+
+.filter-buttons button {
+  margin-right: 5px;
+}
