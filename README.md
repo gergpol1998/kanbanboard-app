@@ -6,6 +6,8 @@ Kanban Board คือ เครื่องมือ Project Management แบ�
 ``` bash
 git clone https://github.com/gergpol1998/kanbanboard-app.git
 
+cd kanbanboard-app
+
 cd client
 
 npm install
