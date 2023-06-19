@@ -6,9 +6,11 @@ function KanbanBoard() {
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [filterStatus, setFilterStatus] = useState('');
-  const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [newTaskDescription, setNewTaskDescription] = useState('');
-  const [newTaskContact, setNewTaskContact] = useState('');
+  const [newTask, setNewTask] = useState({
+    title: "",
+    description: "",
+    contact: ""
+  })
 
   useEffect(() => {
     fetchTasks();
@@ -61,38 +63,42 @@ function KanbanBoard() {
     }
   };
 
-  const handleTitleChange = (e) => {
-    setNewTaskTitle(e.target.value);
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setNewTask((prevTask) => ({
+      ...prevTask,
+      [name]: value,
+    }));
   };
-
-  const handleDescriptionChange = (e) => {
-    setNewTaskDescription(e.target.value);
-  };
-
-  const handleContactChange = (e) => {
-    setNewTaskContact(e.target.value);
-  };
+  
 
   const createNewTask = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post('http://localhost:5000/task/create', {
-        title: newTaskTitle,
-        description: newTaskDescription,
-        contact: newTaskContact,
+        title: newTask.title,
+        description: newTask.description,
+        contact: newTask.contact,
         status: 'pending',
       });
 
       setTasks([...tasks, response.data]);
       setFilteredTasks([...tasks, response.data]);
-      setNewTaskTitle('');
-      setNewTaskDescription('');
-      setNewTaskContact('');
+      clearTask();
+
     } catch (error) {
       console.error('Error creating task:', error);
     }
   };
+
+  const clearTask = () => {
+    setNewTask({
+      title: "",
+      description: "",
+      contact: ""
+    })
+  }
 
   const sortTasksByUpdatedAt = (a, b) => {
     return new Date(b.updatedAt) - new Date(a.updatedAt);
@@ -115,8 +121,9 @@ function KanbanBoard() {
                     type="text"
                     className="form-control"
                     placeholder="Title"
-                    value={newTaskTitle}
-                    onChange={handleTitleChange}
+                    name="title"
+                    value={newTask.title}
+                    onChange={handleOnChange}
                     required
                   />
                 </div>
@@ -124,8 +131,9 @@ function KanbanBoard() {
                   <textarea
                     className="form-control"
                     placeholder="Description"
-                    value={newTaskDescription}
-                    onChange={handleDescriptionChange}
+                    name="description"
+                    value={newTask.description}
+                    onChange={handleOnChange}
                     required
                   ></textarea>
                 </div>
@@ -134,8 +142,9 @@ function KanbanBoard() {
                     type="text"
                     className="form-control"
                     placeholder="Contact"
-                    value={newTaskContact}
-                    onChange={handleContactChange}
+                    name="contact"
+                    value={newTask.contact}
+                    onChange={handleOnChange}
                     required
                   />
                 </div>
